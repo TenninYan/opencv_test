@@ -8,11 +8,11 @@ import numpy as np
  
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-# camera.resolution = (640, 480)
-camera.resolution = (1440, 1080)
+camera.resolution = (640, 480)
+#camera.resolution = (1440, 1080)
 camera.framerate = 32
-# rawCapture = PiRGBArray(camera, size=(640, 480))
-rawCapture = PiRGBArray(camera, size=(1440, 1080))
+rawCapture = PiRGBArray(camera, size=(640, 480))
+#rawCapture = PiRGBArray(camera, size=(1440, 1080))
  
 # allow the camera to warmup
 time.sleep(0.1)
@@ -27,7 +27,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
-                            param1=50,param2=30,minRadius=400,maxRadius=0)
+                            param1=50,param2=30,minRadius=100,maxRadius=0)
 
 	# ensure at least some circles were found
 	if circles is not None:
@@ -54,4 +54,4 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	elif key == ord("s"):
 		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
 		print('image_' + time_now + '.jpg')
-		cv2.imwrite('image_' + time_now + '.jpg',image)
+		cv2.imwrite('image_' + time_now + '.jpg',output)
