@@ -7,9 +7,11 @@ import datetime
  
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (640, 480)
+# camera.resolution = (640, 480)
+camera.resolution = (1440, 1080)
 camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
+# rawCapture = PiRGBArray(camera, size=(640, 480))
+rawCapture = PiRGBArray(camera, size=(1440, 1080))
  
 # allow the camera to warmup
 time.sleep(0.1)
