@@ -14,6 +14,8 @@ import numpy as np
 VIDEO_WIDTH = 1280
 VIDEO_HEIGHT = 960
 
+fontType = cv2.FONT_HERSHEY_SIMPLEX
+
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (VIDEO_WIDTH, VIDEO_HEIGHT)
@@ -40,7 +42,9 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	if circles is not None:
 		# convert the (x, y) coordinates and radius of the circles to integers
 		circles = np.round(circles[0, :]).astype("int")
- 
+
+		(x, y, r) = circles[0]
+		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r),(int(VIDEO_WIDTH/10), int(VIDEO_HEIGHT/10)),fontType,1,(0,0,255), 2,cv2.LINE_AA)
 		# loop over the (x, y) coordinates and radius of the circles
 		for (x, y, r) in circles:
 			# draw the circle in the output image, then draw a rectangle
