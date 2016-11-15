@@ -17,7 +17,7 @@ VIDEO_HEIGHT = 960
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (VIDEO_WIDTH, VIDEO_HEIGHT)
-camera.framerate = 32
+camera.framerate = 2
 rawCapture = PiRGBArray(camera, size=(VIDEO_WIDTH, VIDEO_HEIGHT))
  
 # allow the camera to warmup
@@ -30,9 +30,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	image = frame.array
 
 	output = image.copy()
+	image = cv2.medianBlur(image,9)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
+	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,200,
                             param1=50,param2=30,minRadius=100,maxRadius=0)
 
 	# ensure at least some circles were found
