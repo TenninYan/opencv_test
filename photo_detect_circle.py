@@ -2,9 +2,9 @@
 import cv2
 import numpy as np
  
-image = cv2.imread('photo1.jpg',0)
+image = cv2.imread('photo1.png',1)
 output = image.copy()
-image = cv2.medianBlur(img,5)
+image = cv2.medianBlur(image,5)
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
@@ -24,15 +24,6 @@ if circles is not None:
 
 # show the frame
 cv2.imshow("Frame", output)
-key = cv2.waitKey(1) & 0xFF
 
-# clear the stream in preparation for the next frame
-rawCapture.truncate(0)
-
-# if the `q` key was pressed, break from the loop
-if key == ord("q"):
-	break
-elif key == ord("s"):
-	time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
-	print('image_' + time_now + '.jpg')
-	cv2.imwrite('image_' + time_now + '.jpg',output)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
