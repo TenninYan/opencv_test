@@ -6,13 +6,19 @@ import cv2
 import datetime
 import numpy as np
  
+#small resolution
+#VIDEO_WIDTH = 640
+#VIDEO_HEIGHT = 480
+
+#high resolution
+VIDEO_WIDTH = 1280
+VIDEO_HEIGHT = 960
+
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
-camera.resolution = (640, 480)
-#camera.resolution = (1440, 1080)
+camera.resolution = (VIDEO_WIDTH, VIDEO_HEIGHT)
 camera.framerate = 32
-rawCapture = PiRGBArray(camera, size=(640, 480))
-#rawCapture = PiRGBArray(camera, size=(1440, 1080))
+rawCapture = PiRGBArray(camera, size=(VIDEO_WIDTH, VIDEO_HEIGHT))
  
 # allow the camera to warmup
 time.sleep(0.1)
