@@ -21,6 +21,8 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# grab the raw NumPy array representing the image, then initialize the timestamp
 	# and occupied/unoccupied text
 	image = frame.array
+
+	image = cv2.resize(image, (0,0), fx=0.5, fy=0.5)
  
 	# show the frame
 	cv2.imshow("Frame", image)

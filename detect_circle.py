@@ -53,6 +53,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1) 
 
 	# show the frame
+	output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
 	cv2.imshow("Frame", output)
 	key = cv2.waitKey(1) & 0xFF
  
