@@ -40,7 +40,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	output, output_array = detect_wafer.detect_wafer(image)
 
 	# show the frame
-	#output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
+	output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
 	if output_array[3] != None:
 		counter = 5
 		save_array = output_array
@@ -62,6 +62,10 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
 		print('image_' + time_now + '.jpg')
 		cv2.imwrite('image_' + time_now + '.jpg',output)
+	elif key == ord("o"):
+		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
+		print('image_' + time_now + '.jpg')
+		cv2.imwrite('image_' + time_now + '.jpg',image)
 	elif key == ord("w"):
 		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
 		np.savetxt('data_' + time_now + '.csv', save_array, fmt="%.0f", delimiter=",")

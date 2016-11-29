@@ -32,7 +32,7 @@ def detect_wafer(image):
 		circles = np.round(circles[0, :]).astype("int")
 
 		(x, y, r) = circles[0]
-		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r),(60, 40),fontType,1,(0,0,255), 2,cv2.LINE_AA)
+		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r), (60, 40),fontType,1,(0,0,255), 2,cv2.LINE_AA)
 		x3 = x
 		y3 = y
 		rad = r
