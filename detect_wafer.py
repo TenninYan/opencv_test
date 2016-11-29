@@ -18,7 +18,7 @@ fontType = cv2.FONT_HERSHEY_SIMPLEX
 
 def detect_wafer(image):
 	output = image.copy()
-	image = cv2.medianBlur(image,5)
+	image = cv2.medianBlur(image,9)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
