@@ -30,7 +30,10 @@ def detect_wafer(image):
 		circles = np.round(circles[0, :]).astype("int")
 
 		(x, y, r) = circles[0]
-		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r),(int(VIDEO_WIDTH/10), int(VIDEO_HEIGHT/10)),fontType,1,(0,0,255), 2,cv2.LINE_AA)
+		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r),(60, 40),fontType,1,(0,0,255), 2,cv2.LINE_AA)
+		x3 = x
+		y3 = y
+		rad = r
 		# loop over the (x, y) coordinates and radius of the circles
 		for (x, y, r) in circles:
 			# draw the circle in the output image, then draw a rectangle
@@ -45,8 +48,15 @@ def detect_wafer(image):
 	if lines is not None:
 		for x in range(0,len(lines)):
 			for x1,y1,x2,y2 in lines[x]:
-		    		cv2.line(output,(x1,y1),(x2,y2),(0,0,255),2)
-
+				u = np.array([x2-x1,y2-y1])
+				v = np.array([x3-x1,y3-y1])
+				L = abs(np.cross(u, v)/np.linalg.norm(u))
+				if 0.88 < L/rad < 0.96:
+					print (x1, y1, x2, y2)
+					# inverse y1 and y2 because (0,0) is at top left
+					theta = np.arctan2([y1-y2],[x2-x1])* 180 / np.pi
+					cv2.putText(output,"theta: "+ str(int(theta)), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
+					cv2.line(output,(x1,y1),(x2,y2),(255,0,0),2)
 	return output
 	
 if __name__ == '__main__':
