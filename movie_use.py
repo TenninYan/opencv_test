@@ -5,6 +5,7 @@ import time
 import cv2
 import datetime
 import numpy as np
+import detect_wafer
  
 #small resolution
 #VIDEO_WIDTH = 640
@@ -31,26 +32,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	# and occupied/unoccupied text
 	image = frame.array
 
-	output = image.copy()
-	image = cv2.medianBlur(image,9)
-	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
-	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,200,
-                            param1=50,param2=30,minRadius=100,maxRadius=0)
-
-	# ensure at least some circles were found
-	if circles is not None:
-		# convert the (x, y) coordinates and radius of the circles to integers
-		circles = np.round(circles[0, :]).astype("int")
-
-		(x, y, r) = circles[0]
-		cv2.putText(output,"x: "+ str(x) + " y: "+ str(y) + " r: " + str(r),(int(VIDEO_WIDTH/10), int(VIDEO_HEIGHT/10)),fontType,1,(0,0,255), 2,cv2.LINE_AA)
-		# loop over the (x, y) coordinates and radius of the circles
-		for (x, y, r) in circles:
-			# draw the circle in the output image, then draw a rectangle
-			# corresponding to the center of the circle
-			cv2.circle(output, (x, y), r, (0, 255, 0), 4)
-			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1) 
+	output = detect_wafer.detect_wafer(image)
 
 	# show the frame
 	output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
