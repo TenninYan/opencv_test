@@ -40,8 +40,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 	output, output_array = detect_wafer.detect_wafer(image)
 
 	# show the frame
-	output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
-	
+	#output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
 	if output_array[3] != None:
 		counter = 5
 		save_array = output_array
