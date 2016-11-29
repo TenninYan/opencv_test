@@ -17,6 +17,8 @@ VIDEO_HEIGHT = 960
 
 fontType = cv2.FONT_HERSHEY_SIMPLEX
 
+np.set_printoptions(suppress=True)
+
 # initialize the camera and grab a reference to the raw camera capture
 camera = PiCamera()
 camera.resolution = (VIDEO_WIDTH, VIDEO_HEIGHT)
@@ -27,16 +29,28 @@ rawCapture = PiRGBArray(camera, size=(VIDEO_WIDTH, VIDEO_HEIGHT))
 time.sleep(0.1)
  
 # capture frames from the camera
+
+counter = 0
+
 for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=True):
 	# grab the raw NumPy array representing the image, then initialize the timestamp
 	# and occupied/unoccupied text
 	image = frame.array
 
-	output = detect_wafer.detect_wafer(image)
+	output, output_array = detect_wafer.detect_wafer(image)
 
 	# show the frame
 	output = cv2.resize(output, (0,0), fx=0.5, fy=0.5)
-	cv2.imshow("Frame", output)
+	
+	if output_array[3] != None:
+		counter = 5
+		save_array = output_array
+		cv2.imshow("Frame", output)
+	else:
+		counter -= 1
+	if counter <= 0:
+		cv2.imshow("Frame", output)
+
 	key = cv2.waitKey(1) & 0xFF
  
 	# clear the stream in preparation for the next frame
@@ -49,3 +63,6 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
 		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
 		print('image_' + time_now + '.jpg')
 		cv2.imwrite('image_' + time_now + '.jpg',output)
+	elif key == ord("w"):
+		time_now = datetime.datetime.strftime(datetime.datetime.now(), '%m-%d %H:%M:%S')
+		np.savetxt('data_' + time_now + '.csv', save_array, fmt="%.0f", delimiter=",")

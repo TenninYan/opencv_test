@@ -22,7 +22,9 @@ def detect_wafer(image):
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
 	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
-                            param1=50,param2=30,minRadius=200,maxRadius=0)
+                            param1=50,param2=30,minRadius=150,maxRadius=0)
+	
+	output_array = np.array([None, None, None, None])
 
 	# ensure at least some circles were found
 	if circles is not None:
@@ -34,6 +36,7 @@ def detect_wafer(image):
 		x3 = x
 		y3 = y
 		rad = r
+		output_array = np.array([x3, y3, rad, None])
 		# loop over the (x, y) coordinates and radius of the circles
 		for (x, y, r) in circles:
 			# draw the circle in the output image, then draw a rectangle
@@ -51,14 +54,16 @@ def detect_wafer(image):
 					u = np.array([x2-x1,y2-y1])
 					v = np.array([x3-x1,y3-y1])
 					L = abs(np.cross(u, v)/np.linalg.norm(u))
-					print (L/rad)
+					#print (L/rad)
 					if 0.84 < L/rad < 1:
-						print (x1, y1, x2, y2)
+						# print (x1, y1, x2, y2)
 						# inverse y1 and y2 because (0,0) is at top left
-						theta = np.arctan2([y1-y2],[x2-x1])* 180 / np.pi
-						cv2.putText(output,"theta: "+ str(int(theta)), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
+						theta = int(np.arctan2([y1-y2],[x2-x1])* 180 / np.pi)
+						cv2.putText(output,"theta: "+ str(theta), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
 						cv2.line(output,(x1,y1),(x2,y2),(255,0,0),2)
-	return output
+						output_array = np.array([x3, y3, rad, theta])
+	#return output
+	return (output, output_array)
 	
 if __name__ == '__main__':
 	
