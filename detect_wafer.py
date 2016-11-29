@@ -18,9 +18,11 @@ fontType = cv2.FONT_HERSHEY_SIMPLEX
 
 def detect_wafer(image):
 	output = image.copy()
+	#MODIFY HERE
 	image = cv2.medianBlur(image,9)
 	gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
+	#MODIFY HERE
 	circles = cv2.HoughCircles(gray,cv2.HOUGH_GRADIENT,1,600,
                             param1=50,param2=30,minRadius=150,maxRadius=0)
 	
@@ -44,9 +46,12 @@ def detect_wafer(image):
 			cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1) 
 
-		edges = cv2.Canny(gray,40,80,apertureSize = 3)
+		#MODIFY HERE
+		edges = cv2.Canny(gray,10,30,apertureSize = 3)
+		#MODIFY HERE
 		#return edges,output_array	
 
+		#MODIFY HERE
 		lines = cv2.HoughLinesP(edges,1,np.pi/180, 80, minLineLength=100, maxLineGap=20)
 		if lines is not None:
 			for x in range(0,len(lines)):
@@ -55,6 +60,7 @@ def detect_wafer(image):
 					v = np.array([x3-x1,y3-y1])
 					L = abs(np.cross(u, v)/np.linalg.norm(u))
 					#print (L/rad)
+					#MODIFY HERE
 					if 0.86 < L/rad < 0.96:
 						# print (x1, y1, x2, y2)
 						# inverse y1 and y2 because (0,0) is at top left
@@ -62,7 +68,6 @@ def detect_wafer(image):
 						cv2.putText(output,"theta: "+ str(theta), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
 						cv2.line(output,(x1,y1),(x2,y2),(255,0,0),2)
 						output_array = np.array([x3, y3, rad, theta])
-	#return output
 	return (output, output_array)
 	
 if __name__ == '__main__':
