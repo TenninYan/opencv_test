@@ -6,7 +6,7 @@ import detect_wafer
  
 np.set_printoptions(suppress=True)
 
-image = cv2.imread('photo1.png',1)
+image = cv2.imread('photo6.jpg',1)
 
 output, output_array = detect_wafer.detect_wafer(image)
 #output = detect_wafer.detect_wafer(image)

@@ -44,8 +44,8 @@ def detect_wafer(image):
 			cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1) 
 
-		edges = cv2.Canny(gray,60,100,apertureSize = 3)
-		#return edges	
+		edges = cv2.Canny(gray,40,80,apertureSize = 3)
+		#return edges,output_array	
 
 		lines = cv2.HoughLinesP(edges,1,np.pi/180, 80, minLineLength=100, maxLineGap=20)
 		if lines is not None:
@@ -55,7 +55,7 @@ def detect_wafer(image):
 					v = np.array([x3-x1,y3-y1])
 					L = abs(np.cross(u, v)/np.linalg.norm(u))
 					#print (L/rad)
-					if 0.84 < L/rad < 1:
+					if 0.86 < L/rad < 0.96:
 						# print (x1, y1, x2, y2)
 						# inverse y1 and y2 because (0,0) is at top left
 						theta = int(np.arctan2([y1-y2],[x2-x1])* 180 / np.pi)
