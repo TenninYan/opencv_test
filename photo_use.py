@@ -4,7 +4,7 @@ import numpy as np
 import datetime
 import detect_wafer
  
-image = cv2.imread('photo1.png',1)
+image = cv2.imread('photo2.png',1)
 
 output = detect_wafer.detect_wafer(image)
 
