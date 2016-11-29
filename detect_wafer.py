@@ -41,22 +41,21 @@ def detect_wafer(image):
 			cv2.circle(output, (x, y), r, (0, 255, 0), 4)
 			cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1) 
 
-	edges = cv2.Canny(gray,60,100,apertureSize = 3)
+		edges = cv2.Canny(gray,60,100,apertureSize = 3)
 
-	#return edges
-	lines = cv2.HoughLinesP(edges,1,np.pi/180, 80, minLineLength=100, maxLineGap=20)
-	if lines is not None:
-		for x in range(0,len(lines)):
-			for x1,y1,x2,y2 in lines[x]:
-				u = np.array([x2-x1,y2-y1])
-				v = np.array([x3-x1,y3-y1])
-				L = abs(np.cross(u, v)/np.linalg.norm(u))
-				if 0.88 < L/rad < 0.96:
-					print (x1, y1, x2, y2)
-					# inverse y1 and y2 because (0,0) is at top left
-					theta = np.arctan2([y1-y2],[x2-x1])* 180 / np.pi
-					cv2.putText(output,"theta: "+ str(int(theta)), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
-					cv2.line(output,(x1,y1),(x2,y2),(255,0,0),2)
+		lines = cv2.HoughLinesP(edges,1,np.pi/180, 80, minLineLength=100, maxLineGap=20)
+		if lines is not None:
+			for x in range(0,len(lines)):
+				for x1,y1,x2,y2 in lines[x]:
+					u = np.array([x2-x1,y2-y1])
+					v = np.array([x3-x1,y3-y1])
+					L = abs(np.cross(u, v)/np.linalg.norm(u))
+					if 0.88 < L/rad < 0.96:
+						print (x1, y1, x2, y2)
+						# inverse y1 and y2 because (0,0) is at top left
+						theta = np.arctan2([y1-y2],[x2-x1])* 180 / np.pi
+						cv2.putText(output,"theta: "+ str(int(theta)), (60, 80), fontType, 1, (0,0,255), 2, cv2.LINE_AA)
+						cv2.line(output,(x1,y1),(x2,y2),(255,0,0),2)
 	return output
 	
 if __name__ == '__main__':
